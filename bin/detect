@@ -1,5 +1,6 @@
 #!/bin/sh
 
+echo "-----> DETECT"
 env_dir=$1
 whitelist_regex=${2:-''}
 blacklist_regex=${3:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'}
