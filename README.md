@@ -22,12 +22,15 @@ You need to define some variable into your heroku app:
 heroku config:set NAME=_HEROKU_APP_NAME
 heroku config:set GIT_REPO=_GIT_URL_REPOSITORY
 heroku config:set NUM_INSTANCES=_NUMBER_OF_HEROKU_INSTANCES
+heroku config:set NETRC=_YOUR_.NETRC_FILE
 ```
 Example:
 ```bash
 heroku config:set NAME=anyfetch-hydrater-plaintext
 heroku config:set GIT_REPO=git@github.com:Papiel/plaintext.hydrater.anyfetch.com.git
 heroku config:set NUM_INSTANCES=4
+netrc=$(<~/.netrc)
+heroku config:set NETRC=$netrc
 ```
 
 
