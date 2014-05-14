@@ -1,0 +1,52 @@
+#!/bin/bash
+
+export_env_dir() {
+  env_dir=$1
+  whitelist_regex=${2:-''}
+  blacklist_regex=${3:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'}
+  if [ -d "$env_dir" ]; then
+    for e in $(ls $env_dir); do
+      echo "$e" | grep -E "$whitelist_regex" | grep -qvE "$blacklist_regex" &&
+      export "$e=$(cat $env_dir/$e)"
+      :
+    done
+  fi
+}
+
+print_env_dir() {
+  env_dir=$1
+  env_variables=""
+  whitelist_regex=${2:-''}
+  blacklist_regex=${3:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'}
+  if [ -d "$env_dir" ]; then
+    for e in $(ls $env_dir); do
+      echo "$e" | grep -E "$whitelist_regex" | grep -qvE "$blacklist_regex" &&
+      env_variables+="$e=$(cat $env_dir/$e) "
+      :
+    done
+  fi
+  echo $env_variables
+}
+
+
+BUILD_DIR=$1
+
+PWD=$(pwd)
+cd $PWD
+
+$NETRC > ~/.netrc
+
+export_env_dir
+
+git clone $GIT_REPO $NAME
+cd $NAME
+
+for i in {2..$NUM_INSTANCES}
+do
+	git remote add heroku$i git@heroku.com:$NAME.git
+	git push heroku$i master
+	heroku config:set print_env_dir --app $NAME$i
+done
+
+cd ..
+rm -rf $NAME
