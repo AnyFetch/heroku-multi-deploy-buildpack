@@ -19,14 +19,14 @@ if [[ "${NAME:$i:1}" =~ [0-9] ]]; then
   exit 0
 else
   cd $build_dir
+  git init
+  git add .
+  git commit -m "osef"
   sh .profile.d/gen-netrc.sh
-  echo "LS"
-  ls -a ./
-  START=2
+
+  START="2"
   END=$NUM_INSTANCES
-  ## save $START, just in case if we need it later ##
-  i=$START
-  while [[ $i -le $END ]]
+  for i in $(eval echo "{$START..$END}")
   do
     $build_dir/vendor/heroku-toolbelt/bin/heroku config:set $env_variables --app $NAME$i
     git remote add heroku$i git@heroku.com:$name$i.git
