@@ -15,14 +15,15 @@ fi
 
 echo "ENV"
 printenv
+echo "LS"
+ls $1
 
 if [[ "${NAME:$i:1}" =~ [0-9] ]]; then
   exit 0
 else
   echo "GITHUB:$GIT_REPO"
-  git clone $GIT_REPO $NAME
+  bundle install
   cd $NAME
-  ssh-keygen -R github.com
   for i in $(seq 2 $NUM_INSTANCES);do
   	git remote add heroku$i git@heroku.com:$NAME.git
   	git push heroku$i master
