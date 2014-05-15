@@ -14,15 +14,15 @@ if [ -d "$env_dir" ]; then
   done
 fi
 
-echo "ENV"
-echo "$env_variables"
-
+echo "TOOLBELT"
+ls $build_dir/.profile.d/
 
 if [[ "${NAME:$i:1}" =~ [0-9] ]]; then
   exit 0
 else
   cd $build_dir
   for i in $(seq 2 $NUM_INSTANCES);do
+
     $build_dir/vendor/heroku-toolbelt/bin/heroku config:set $env_variables --app $NAME$i
     git remote add heroku$i git@heroku.com:$name$i.git
     git push heroku$i master
