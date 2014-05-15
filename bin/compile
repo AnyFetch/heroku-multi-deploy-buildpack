@@ -8,23 +8,24 @@ blacklist_regex='^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'
 if [ -d "$env_dir" ]; then
   for e in $(ls $env_dir); do
     echo "$e" | grep -qvE "$blacklist_regex" && export "$e=$(cat $env_dir/$e)"
-    echo "$e" | grep -qvE "$blacklist_regex" && env_variables+="$e=$(cat $env_dir/$e) "
+    if [ $e -ne "NAME" ]; then
+      echo "$e" | grep -qvE "$blacklist_regex" && env_variables+="$e=$(cat $env_dir/$e) "
+    fi
   done
 fi
 
-echo "LS"
-ls $1
-
-pwd
-ls ./
+echo "ENV"
+echo "$env_variables"
 
 
 if [[ "${NAME:$i:1}" =~ [0-9] ]]; then
   exit 0
 else
+  cd $build_dir
   for i in $(seq 2 $NUM_INSTANCES);do
-    git push heroku$i master
     $build_dir/vendor/heroku-toolbelt/bin/heroku config:set $env_variables --app $NAME$i
+    git remote add heroku$i git@heroku.com:$name$i.git
+    git push heroku$i master
   done
 
   cd ..
