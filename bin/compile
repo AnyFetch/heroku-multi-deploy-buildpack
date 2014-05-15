@@ -22,7 +22,7 @@ else
   echo "GITHUB:$GIT_REPO"
   git clone $GIT_REPO $NAME
   cd $NAME
-
+  ssh-keygen -R github.com
   for i in $(seq 2 $NUM_INSTANCES);do
   	git remote add heroku$i git@heroku.com:$NAME.git
   	git push heroku$i master
