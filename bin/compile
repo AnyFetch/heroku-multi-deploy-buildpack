@@ -2,6 +2,7 @@
 
 # Get env
 env_dir=$1
+echo "ENV_DIR=$env_dir"
 env_variables=""
 whitelist_regex=${2:-''}
 blacklist_regex=${3:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'}
