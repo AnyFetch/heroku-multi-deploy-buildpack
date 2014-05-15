@@ -1,46 +1,30 @@
 #!/bin/bash
 
-export_env_dir() {
-  env_dir=$1
-  whitelist_regex=${2:-''}
-  blacklist_regex=${3:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'}
-  if [ -d "$env_dir" ]; then
-    for e in $(ls $env_dir); do
-      echo "$e" | grep -E "$whitelist_regex" | grep -qvE "$blacklist_regex" &&
-      export "$e=$(cat $env_dir/$e)"
-      :
-    done
-  fi
-}
-
-print_env_dir() {
-  env_dir=$1
-  env_variables=""
-  whitelist_regex=${2:-''}
-  blacklist_regex=${3:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'}
-  if [ -d "$env_dir" ]; then
-    for e in $(ls $env_dir); do
-      echo "$e" | grep -E "$whitelist_regex" | grep -qvE "$blacklist_regex" &&
-      env_variables+="$e=$(cat $env_dir/$e) "
-      :
-    done
-  fi
-  echo $env_variables
-}
+# Get env
+env_dir=$1
+whitelist_regex=${2:-''}
+blacklist_regex=${3:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'}
+if [ -d "$env_dir" ]; then
+  for e in $(ls $env_dir); do
+    echo "$e" | grep -E "$whitelist_regex" | grep -qvE "$blacklist_regex" &&
+    export "$e=$(cat $env_dir/$e)"
+    :
+  done
+fi
 
 
-BUILD_DIR=$1
+# get env in a string
+env_variables=""
+whitelist_regex=${2:-''}
+blacklist_regex=${3:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'}
+if [ -d "$env_dir" ]; then
+  for e in $(ls $env_dir); do
+    echo "$e" | grep -E "$whitelist_regex" | grep -qvE "$blacklist_regex" &&
+    env_variables+="$e=$(cat $env_dir/$e) "
+    :
+  done
+fi
 
-PWD=$(pwd)
-cd $PWD
-echo "LS"
-ls
-echo "LS.."
-ls ../
-echo "LS../.."
-ls ../../
-
-export_env_dir
 echo "ENV"
 printenv
 
@@ -55,7 +39,7 @@ else
   do
   	git remote add heroku$i git@heroku.com:$NAME.git
   	git push heroku$i master
-  	vendor/heroku-toolbelt/bin/heroku config:set print_env_dir --app $NAME$i
+  	vendor/heroku-toolbelt/bin/heroku config:set $env_variables --app $NAME$i
   done
 
   cd ..
