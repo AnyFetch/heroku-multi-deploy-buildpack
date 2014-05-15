@@ -24,10 +24,10 @@ else
   git commit -m "osef"
   sh .profile.d/gen-netrc.sh
 
-  for ((i=1; i<=$NUM_INSTANCES; i++))
-  do
-     echo $i
-     $build_dir/vendor/heroku-toolbelt/bin/heroku config:set $env_variables --app $NAME$i
+echo "NUM_INSTANCES=$NUM_INSTANCES"
+
+  for i in $(seq $NUM_INSTANCES); do
+    $build_dir/vendor/heroku-toolbelt/bin/heroku config:set $env_variables --app $NAME$i
     git remote add heroku$i git@heroku.com:$name$i.git
     git push heroku$i master
   done
