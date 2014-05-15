@@ -39,8 +39,9 @@ export_env_dir
 if [[ "${NAME:$i:1}" =~ [0-9] ]]; then
   exit 0
 else
-  git clone $GIT_REPO $NAME
-  cd $NAME
+  echo "GITHUB:$GIT_REPO"
+  git clone $GIT_REPO
+  cd $GIT_REPO
 
   for i in {2..$NUM_INSTANCES}
   do
