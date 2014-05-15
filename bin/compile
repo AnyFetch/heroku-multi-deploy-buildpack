@@ -28,7 +28,7 @@ else
 
   i=2
   while [ "$i" -le "$NUM_INSTANCES" ]; do
-    $build_dir/vendor/heroku-toolbelt/bin/heroku config:set "$env_variables NAME=$NAME$i"--app $NAME$i
+    $build_dir/vendor/heroku-toolbelt/bin/heroku config:set "$env_variables NAME=$NAME$i" --app $NAME$i
     git remote add heroku$i git@heroku.com:$name$i.git
     git push heroku$i master
     i=$(($i + 1))
