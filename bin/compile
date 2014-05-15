@@ -8,7 +8,7 @@ blacklist_regex='^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'
 if [ -d "$env_dir" ]; then
   for e in $(ls $env_dir); do
     echo "$e" | grep -qvE "$blacklist_regex" && export "$e=$(cat $env_dir/$e)"
-    if [ "$e" -ne "NAME" ]; then
+    if [ "$e" != "NAME" ]; then
       echo "$e" | grep -qvE "$blacklist_regex" && env_variables+="$e=$(cat $env_dir/$e) "
     fi
   done
