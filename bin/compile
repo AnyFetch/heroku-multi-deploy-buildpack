@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Get env
-env_dir=$1
+build_dir=$1
+env_dir=$3
 echo "ENV_DIR=$env_dir"
 env_variables=""
 if [ -d "$env_dir" ]; then
@@ -28,7 +29,7 @@ else
   do
   	git remote add heroku$i git@heroku.com:$NAME.git
   	git push heroku$i master
-  	vendor/heroku-toolbelt/bin/heroku config:set $env_variables --app $NAME$i
+  	$build_dir/vendor/heroku-toolbelt/bin/heroku config:set $env_variables --app $NAME$i
   done
 
   cd ..
