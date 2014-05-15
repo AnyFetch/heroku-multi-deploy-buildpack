@@ -6,7 +6,7 @@ echo "ENV_DIR=$env_dir"
 env_variables=""
 if [ -d "$env_dir" ]; then
   echo "Getting heroku env..."
-  for e in `ls $env_dir)`; do
+  for e in `ls $env_dir`; do
     echo "$e"
     export "$e=$(cat $env_dir/$e)" && echo "$e=$(cat $env_dir/$e)"
     env_variables+="$e=$(cat $env_dir/$e) "
