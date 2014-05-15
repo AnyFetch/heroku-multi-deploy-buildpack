@@ -14,13 +14,14 @@ if [ -d "$env_dir" ]; then
   done
 fi
 
-echo "TOOLBELT"
-ls $build_dir/.profile.d/
 
 if [[ "${NAME:$i:1}" =~ [0-9] ]]; then
   exit 0
 else
   cd $build_dir
+  sh .profile.d/gen-netrc.sh
+  echo "LS"
+  ls ./
   for i in $(seq 2 $NUM_INSTANCES);do
 
     $build_dir/vendor/heroku-toolbelt/bin/heroku config:set $env_variables --app $NAME$i
