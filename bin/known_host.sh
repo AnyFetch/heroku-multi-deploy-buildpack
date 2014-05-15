@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+mkdir ~/.ssh
 cat >> ~/.ssh/known_hosts << EOF
 |1|ehyo9bq48wWCIlUieXGqFozZLyc=|0+KNQFSC4COxx+FpyFLF68u+/d8= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBHZBXOCDldpjsikGuYr8L47NmVzuBQkBWSb79t3/HmvqqCYpOXqtexRaQC+9lJF0azJ4p3q929AP2vXgV6j0hLc=
 |1|umTLYzd14AW/Ug6WhIrFHHIBrX4=|j+cgZGWKf3szyb5nKdSrv7Z9iTc= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBHZBXOCDldpjsikGuYr8L47NmVzuBQkBWSb79t3/HmvqqCYpOXqtexRaQC+9lJF0azJ4p3q929AP2vXgV6j0hLc=
