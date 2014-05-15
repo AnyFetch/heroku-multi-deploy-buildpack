@@ -21,14 +21,17 @@ else
   cd $build_dir
   sh .profile.d/gen-netrc.sh
   echo "LS"
-  ls ./
-  for i in $(seq 2 $NUM_INSTANCES);do
-
+  ls -a ./
+  START=2
+  END=$NUM_INSTANCES
+  ## save $START, just in case if we need it later ##
+  i=$START
+  while [[ $i -le $END ]]
+  do
     $build_dir/vendor/heroku-toolbelt/bin/heroku config:set $env_variables --app $NAME$i
     git remote add heroku$i git@heroku.com:$name$i.git
     git push heroku$i master
   done
-
-  cd ..
-  rm -rf $NAME
 fi
+
+
