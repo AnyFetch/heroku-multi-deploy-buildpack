@@ -5,15 +5,14 @@ build_dir=$1
 env_dir=$3
 echo "ENV_DIR=$env_dir"
 env_variables=""
+whitelist_regex=${2:-''}
+blacklist_regex=${3:-'^(PATH|GIT_DIR|CPATH|CPPATH|LD_PRELOAD|LIBRARY_PATH)$'}
 if [ -d "$env_dir" ]; then
-  echo "Getting heroku env..."
-  for e in `ls $env_dir`; do
-    echo "$e"
-    export "$e=$(cat $env_dir/$e)" && echo "$e=$(cat $env_dir/$e)"
-    env_variables+="$e=$(cat $env_dir/$e) "
+  for e in $(ls $env_dir); do
+    echo "$e" | grep -E "$whitelist_regex" | grep -qvE "$blacklist_regex" && export "$e=$(cat $env_dir/$e)"
+    echo "$e" | grep -E "$whitelist_regex" | grep -qvE "$blacklist_regex" && env_variables+="$e=$(cat $env_dir/$e) "
   done
 fi
-
 
 echo "ENV"
 printenv
@@ -25,8 +24,7 @@ else
   git clone $GIT_REPO
   cd $GIT_REPO
 
-  for i in {2..$NUM_INSTANCES}
-  do
+  for i in {2..$NUM_INSTANCES};do
   	git remote add heroku$i git@heroku.com:$NAME.git
   	git push heroku$i master
   	$build_dir/vendor/heroku-toolbelt/bin/heroku config:set $env_variables --app $NAME$i
