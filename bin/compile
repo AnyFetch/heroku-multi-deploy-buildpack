@@ -34,8 +34,6 @@ BUILD_DIR=$1
 PWD=$(pwd)
 cd $PWD
 
-$NETRC > ~/.netrc
-
 export_env_dir
 
 if [[ "${NAME:$i:1}" =~ [0-9] ]]; then
@@ -48,7 +46,7 @@ else
   do
   	git remote add heroku$i git@heroku.com:$NAME.git
   	git push heroku$i master
-  	heroku config:set print_env_dir --app $NAME$i
+  	vendor/heroku-toolbelt/bin/heroku config:set print_env_dir --app $NAME$i
   done
 
   cd ..
